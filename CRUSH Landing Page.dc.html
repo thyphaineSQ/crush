@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<template id="__bundler_thumbnail" data-bg-color="#f4e8dd">
+  <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+    <rect width="1200" height="800" fill="#f4e8dd"/>
+    <g fill="#fff6e4" stroke="#d6b478" stroke-width="6">
+      <circle cx="600" cy="360" r="120"/>
+      <circle cx="600" cy="270" r="100"/>
+      <circle cx="500" cy="340" r="100"/>
+      <circle cx="700" cy="340" r="100"/>
+      <circle cx="540" cy="450" r="92"/>
+      <circle cx="660" cy="450" r="92"/>
+    </g>
+    <text x="600" y="650" text-anchor="middle" font-family="'Baloo 2',sans-serif" font-weight="800" font-size="120" letter-spacing="-4" fill="#1d160d">CRUSH</text>
+  </svg>
+</template>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&amp;family=Hanken+Grotesk:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0}
+  @keyframes crush-marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  @keyframes crush-bob{0%,100%{transform:translateY(0) rotate(var(--rot,0deg))}50%{transform:translateY(-9px) rotate(var(--rot,0deg))}}
+  @keyframes crush-wiggle{0%,100%{transform:rotate(-7deg)}50%{transform:rotate(5deg)}}
+  @keyframes crush-spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+  @keyframes crush-fade{from{opacity:0}to{opacity:1}}
+  @keyframes crush-pop-in{from{opacity:0;transform:translateY(12px) scale(.94)}to{opacity:1;transform:translateY(0) scale(1)}}
+  @keyframes crush-pop{
+    0%{transform:scale(.14) rotate(var(--rot,0deg));opacity:0}
+    9%{transform:scale(1.32) rotate(calc(var(--rot,0deg) + 14deg));opacity:1}
+    22%{transform:scale(.92) rotate(var(--rot,0deg));opacity:1}
+    68%{transform:scale(1) rotate(var(--rot,0deg));opacity:.92}
+    100%{transform:scale(.14) rotate(var(--rot,0deg));opacity:0}
+  }
+  ::selection{background:#caa0d8;color:#1d160d}
+  summary{list-style:none;cursor:pointer}
+  summary::-webkit-details-marker{display:none}
+  details[open] [data-faqic]{transform:rotate(45deg)}
+  @media(max-width:880px){ [data-stat]{grid-template-columns:1fr 1fr !important} }
+  @media(max-width:760px){
+    [data-stack]{grid-template-columns:1fr !important;gap:30px !important}
+    [data-nos]{grid-template-columns:1fr !important}
+    [data-badge]{right:-3% !important;top:-3% !important;width:clamp(56px,13vw,74px) !important;height:clamp(56px,13vw,74px) !important}
+    [data-90g]{left:-3% !important;bottom:1% !important}
+  }
+  @media(max-width:560px){ [data-stat]{grid-template-columns:1fr !important} }
+</style>
+</helmet>
+<div style="font-family:'Hanken Grotesk',sans-serif;background:#f4e8dd;color:#1d160d;overflow-x:hidden;-webkit-font-smoothing:antialiased">
+
+  <!-- NAV -->
+  <header style="position:sticky;top:0;z-index:50;background:rgba(244,232,221,.86);backdrop-filter:blur(10px);border-bottom:1px solid rgba(29,22,13,.08)">
+    <div style="max-width:1200px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px">
+      <a href="#top" style="display:flex;align-items:flex-end;gap:6px;text-decoration:none;color:#1d160d">
+        <span style="font-family:'Baloo 2',sans-serif;font-weight:800;font-size:28px;letter-spacing:-.5px;line-height:.8">CRUSH</span>
+        <span style="font-family:'Baloo 2',sans-serif;font-weight:600;font-size:14px;opacity:.7;margin-bottom:2px">food</span>
+      </a>
+      <div style="display:flex;align-items:center;gap:14px">
+        <div style="display:flex;border:2px solid #1d160d;border-radius:100px;overflow:hidden">
+          <button type="button" onClick="{{ onEn }}" style="{{ enBtn }}">EN</button>
+          <button type="button" onClick="{{ onFr }}" style="{{ frBtn }}">FR</button>
+        </div>
+        <a href="#join" style="font-family:'Baloo 2',sans-serif;font-weight:700;font-size:15px;text-decoration:none;background:#1d160d;color:#f4e8dd;padding:11px 20px;border-radius:100px;white-space:nowrap">{{ t.joinCta }}</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section id="top" style="max-width:1100px;margin:0 auto;padding:24px 24px 48px;text-align:center;position:relative">
+    <div style="display:inline-flex;align-items:center;gap:8px;white-space:nowrap;background:#caa0d8;color:#1d160d;font-weight:700;font-size:13px;letter-spacing:.14em;text-transform:uppercase;padding:7px 16px;border-radius:100px">{{ t.heroBadge }}</div>
+    <h1 style="font-family:'Baloo 2',sans-serif;font-weight:800;font-size:clamp(48px,9.5vw,108px);line-height:.86;letter-spacing:-3px;margin:12px 0 0">{{ t.heroTitle }}</h1>
+    <p style="font-size:clamp(17px,2.1vw,21px);line-height:1.4;max-width:520px;margin:14px auto 0;color:#4a4034;font-weight:500">{{ t.heroSubA }}<strong style="color:#1d160d">{{ t.heroSubStrong }}</strong>{{ t.heroSubMid }}<strong style="color:#1d160d">{{ t.heroSubStrong2 }}</strong>{{ t.heroSubB }}<span style="color:#9a7bb0;font-weight:700">{{ t.heroSubSpan }}</span></p>
+
+    <!-- PACKS — the centrepiece -->
+    <div style="position:relative;max-width:680px;margin:8px auto 0">
+      <svg viewBox="0 0 700 70" style="position:absolute;left:-6%;bottom:10px;width:112%;height:auto;z-index:0;overflow:visible">
+        <path d="M 22,40 C 150,16 250,58 360,40 C 470,22 560,56 678,36" fill="none" stroke="#1d160d" stroke-width="4" stroke-linecap="round"></path>
+        <path d="M 70,56 C 210,40 320,66 430,52 C 520,40 600,58 642,50" fill="none" stroke="#1d160d" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="1 13" opacity=".4"></path>
+      </svg>
+      <img src="assets/packs-cut.png" alt="CRUSH protein popcorn — Pistachio, Chocolate Hazelnut, Salted Caramel" style="position:relative;z-index:1;width:100%;height:auto;display:block;filter:drop-shadow(0 12px 12px rgba(29,22,13,.13))">
+
+      <!-- spinning purple MADE FOR CRAVINGS badge -->
+      <div data-badge="" style="position:absolute;top:14%;right:-14%;width:clamp(74px,9vw,108px);height:clamp(74px,9vw,108px);z-index:2">
+        <div style="position:absolute;inset:0;border-radius:50%;background:#caa0d8;border:3px solid #1d160d;box-shadow:0 10px 22px rgba(29,22,13,.22)"></div>
+        <svg viewBox="0 0 120 120" style="position:absolute;inset:0;width:100%;height:100%;animation:crush-spin 11s linear infinite">
+          <defs><path id="crushBadgePath" d="M60,60 m-45,0 a45,45 0 1,1 90,0 a45,45 0 1,1 -90,0"></path></defs>
+          <text fill="#1d160d" textLength="280" lengthAdjust="spacing" style="font-family:'Baloo 2',sans-serif;font-weight:800;font-size:15px;letter-spacing:2px"><textPath href="#crushBadgePath" startOffset="0"></textPath></text>
+        </svg>
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:clamp(24px,3.2vw,38px);color:#1d160d">☺</div>
+      </div>
+
+      <!-- 90g sticker -->
+      <div data-90g="" style="position:absolute;bottom:-3%;left:-3%;background:#cdd391;color:#1d160d;font-family:'Baloo 2',sans-serif;font-weight:800;font-size:clamp(16px,2.1vw,24px);line-height:.85;text-align:center;border:2.5px solid #1d160d;border-radius:15px;padding:10px 13px;transform:rotate(-8deg);z-index:2;box-shadow:0 8px 16px rgba(29,22,13,.16)">90g<br><span style="font-weight:700;font-size:.5em;letter-spacing:.12em">{{ t.sticker90 }}</span></div>
+    </div>
+
+    <!-- CTA -->
+    <form onSubmit="{{ onSubmit }}" style="margin:30px auto 0;display:flex;flex-wrap:wrap;gap:10px;justify-content:center;max-width:500px">
+      <sc-if value="{{ done }}" hint-placeholder-val="{{ false }}">
+        <div style="flex:1;min-width:260px;display:flex;flex-direction:column;gap:10px;align-items:center">
+          <div style="align-self:stretch;background:#cdd391;border:2px solid #1d160d;border-radius:14px;padding:15px 18px;font-weight:700;font-family:'Baloo 2',sans-serif;font-size:17px;text-align:center">{{ t.doneHero }}</div>
+          <sc-if value="{{ notSuggested }}" hint-placeholder-val="{{ true }}">
+            <button type="button" onClick="{{ onOpenModal }}" style="border:none;background:none;cursor:pointer;font-family:'Baloo 2',sans-serif;font-weight:700;font-size:14px;color:#1d160d;text-decoration:underline;text-underline-offset:3px">{{ t.ideaLink }}</button>
+          </sc-if>
+        </div>
+      </sc-if>
+      <sc-if value="{{ notDone }}" hint-placeholder-val="{{ true }}">
+        <input type="email" required="" value="{{ email }}" onChange="{{ onEmail }}" placeholder="{{ t.emailPlaceholder }}" style="flex:1;min-width:240px;font-family:'Hanken Grotesk',sans-serif;font-size:16px;font-weight:500;padding:15px 18px;border-radius:14px;border:2px solid #1d160d;background:#fffaf3;color:#1d160d;outline:none">
+        <button type="submit" style="font-family:'Baloo 2',sans-serif;font-weight:700;font-size:17px;cursor:pointer;border:2px solid #1d160d;background:#1d160d;color:#f4e8dd;padding:15px 28px;border-radius:14px" style-hover="{{ btnHover }}">{{ t.joinCta }}</button>
+      </sc-if>
+    </form>
+    <p style="margin:14px 0 0;font-size:14px;color:#8a7d6c;font-weight:500">{{ t.formNote }}</p>
+    <div style="margin:22px auto 0;display:flex;flex-direction:column;align-items:center;gap:2px;color:#9a7bb0;font-family:'Baloo 2',sans-serif;font-weight:700;font-size:14px">
+      <span>{{ t.scrollMore }}</span>
+      <span style="font-size:20px;color:#1d160d;animation:crush-bob 1.6s ease-in-out infinite">↓</span>
+    </div>
+  </section>
+
+  <!-- TICKER -->
+  <sc-if value="{{ showTicker }}" hint-placeholder-val="{{ true }}">
+  <div style="background:#1d160d;color:#f4e8dd;padding:14px 0;overflow:hidden;white-space:nowrap;border-top:2px solid #1d160d">
+    <div style="display:inline-flex;animation:crush-marquee 26s linear infinite;will-change:transform">
+      <span style="font-family:'Baloo 2',sans-serif;font-weight:700;font-size:22px;letter-spacing:.02em">{{ t.tickerLine }}</span>
+      <span style="font-family:'Baloo 2',sans-serif;font-weight:700;font-size:22px;letter-spacing:.02em">{{ t.tickerLine }}</span>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- PROBLEM -->
+  <section style="background:#cdd391">
+    <div style="max-width:1000px;margin:0 auto;padding:60px 24px;text-align:center">
+      <p style="font-family:'Baloo 2',sans-serif;font-weight:600;font-size:15px;letter-spacing:.16em;text-transform:uppercase;color:#5a662a;margin:0">{{ t.probKicker }}</p>
+      <h2 style="font-family:'Baloo 2',sans-serif;font-weight:800;font-size:clamp(36px,5.4vw,68px);line-height:1.02;letter-spacing:-1.2px;margin:18px auto 0;max-width:760px">{{ t.probTitle1 }}<br>{{ t.probTitle2 }}</h2>
+      <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:10px 22px;margin:30px 0 0;font-family:'Baloo 2',sans-serif;font-weight:700;font-size:clamp(20px,3vw,30px)">
+        <span style="color:#1d160d"><s style="text-decoration-thickness:3px;text-decoration-color:#b06a3a;opacity:.55">{{ t.probTaste }}</s> <span style="opacity:.45">{{ t.probOr }}</span> <s style="text-decoration-thickness:3px;text-decoration-color:#b06a3a;opacity:.55">{{ t.probNutrition }}</s></span>
+        <span style="color:#1d160d"><s style="text-decoration-thickness:3px;text-decoration-color:#b06a3a;opacity:.55">{{ t.probTreat }}</s> <span style="opacity:.45">{{ t.probOr }}</span> <s style="text-decoration-thickness:3px;text-decoration-color:#b06a3a;opacity:.55">{{ t.probFeelgood }}</s></span>
+      </div>
+      
+      <p style="font-size:clamp(20px,2.6vw,28px);font-weight:600;line-height:1.4;max-width:680px;margin:34px auto 0;color:#2c2a16">{{ t.probBody }}</p><p style="font-family:'Baloo 2',sans-serif;font-weight:700;font-size:clamp(15px,1.8vw,18px);color:#5a662a;margin:14px 0 0">{{ t.probTwistA }}<em>{{ t.probTwistEm }}</em>{{ t.probTwistB }}</p>
+    </div>
+  </section>
+
+  <!-- PRODUCT EXPERIENCE -->
+  <section style="background:#f4bd84">
+    <div data-stack="" style="max-width:1200px;margin:0 auto;padding:60px 24px;display:grid;grid-template-columns:1fr 1fr;gap:54px;align-items:center">
+      <div>
+        <p style="font-family:'Baloo 2',sans-serif;font-weight:600;font-size:15px;letter-spacing:.16em;text-transform:uppercase;color:#9a5618;margin:0">{{ t.prodKicker }}</p>
+        <h2 style="font-family:'Baloo 2',sans-serif;font-weight:800;font-size:clamp(38px,5.2vw,66px);line-height:1;letter-spacing:-1.4px;margin:16px 0 0">{{ t.prodTitle }}</h2>
+        <p style="font-size:clamp(18px,2.1vw,21px);line-height:1.5;font-weight:500;color:#5a3413;margin:22px 0 0;max-width:480px">{{ t.prodBody }}</p>
+        <p style="font-family:'Baloo 2',sans-serif;font-weight:700;font-size:clamp(20px,2.6vw,26px);line-height:1.2;margin:26px 0 0;color:#1d160d">{{ t.prodPunch }}</p>
+        <span style="display:inline-block;margin-top:16px;background:#1d160d;color:#f4e8dd;font-family:'Baloo 2',sans-serif;font-weight:700;font-size:14px;padding:9px 16px;border-radius:100px;transform:rotate(-2deg)">{{ t.prodTag }}</span>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:center;min-height:380px;position:relative">
+        <div style="position:relative;width:min(360px,86%);aspect-ratio:1;animation:crush-bob 5s ease-in-out infinite">
+          <!-- the one big popcorn -->
+          <div style="position:absolute;inset:0;border-radius:50%;overflow:hidden;border:4px solid #1d160d;box-shadow:0 22px 38px rgba(29,22,13,.24)">
+            <img src="assets/crunch-pop.jpg" alt="A single piece of CRUSH popcorn" style="width:100%;height:100%;object-fit:cover;object-position:center;transform:scale(1.04)">
+          </div>
+          <!-- dynamic strokes, like on the pack -->
+          <div style="position:absolute;top:-22px;left:6px;width:6px;height:34px;border-radius:6px;background:#1d160d;transform:rotate(18deg)"></div>
+          <div style="position:absolute;top:-34px;left:42px;width:6px;height:40px;border-radius:6px;background:#1d160d;transform:rotate(0deg)"></div>
+          <div style="position:absolute;top:-22px;left:78px;width:6px;height:34px;border-radius:6px;background:#1d160d;transform:rotate(-18deg)"></div>
+          <div style="position:absolute;bottom:6px;right:-30px;width:6px;height:30px;border-radius:6px;background:#1d160d;transform:rotate(-28deg)"></div>
+          <div style="position:absolute;bottom:-14px;right:6px;width:6px;height:26px;border-radius:6px;background:#1d160d;transform:rotate(8deg)"></div>
+          <!-- stars -->
+          <div style="position:absolute;top:30%;right:-34px;font-size:24px;color:#1d160d;transform:rotate(12deg)">✦</div>
+          <div style="position:absolute;bottom:18%;left:-30px;font-size:18px;color:#1d160d">✦</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FUNCTIONAL -->
+  <section data-funcsec="" style="background:#c5a6dd;position:relative;overflow:hidden">
+    {{ popField }}
+    <div style="max-width:1140px;margin:0 auto;padding:60px 24px;text-align:center;position:relative;z-index:1">
+      <p style="font-family:'Baloo 2',sans-serif;font-weight:600;font-size:15px;letter-spacing:.16em;text-transform:uppercase;color:#5b3f76;margin:0">{{ t.funcKicker }}</p>
+      <h2 style="font-family:'Baloo 2',sans-serif;font-weight:800;font-size:clamp(40px,5.6vw,72px);line-height:1;letter-spacing:-1.4px;margin:14px 0 0;color:#1d160d">{{ t.funcTitle }}</h2>
+      <div data-stat="" style="display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:46px;text-align:left">
+        <sc-for list="{{ t.stats }}" as="s" hint-placeholder-count="3">
+          <div style="background:#f6ecde;border-radius:22px;padding:24px 22px;display:flex;flex-direction:column;gap:14px;box-shadow:0 10px 22px rgba(50,30,70,.12)">
+            <span style="display:inline-flex;align-items:center;gap:7px;align-self:flex-start;background:#fff;border:1.5px solid rgba(29,22,13,.14);color:#5a4a38;font-weight:600;font-size:12px;padding:5px 11px;border-radius:100px">
+              <span style="width:8px;height:8px;border-radius:50%;background:{{ s.dot }}"></span>{{ s.tag }}
+            </span>
+            <div>
+              <div style="font-family:'Baloo 2',sans-serif;font-weight:800;font-size:clamp(44px,5vw,56px);line-height:.9;letter-spacing:-1.5px;color:#1d160d">{{ s.big }}</div>
+              <div style="font-family:'Baloo 2',sans-serif;font-weight:700;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#8a7560;margin-top:6px">{{ s.unit }}</div>
+            </div>
+            <p style="font-weight:500;font-size:14px;color:#6b5a47;margin:0;line-height:1.4">{{ s.note }}</p>
+          </div>
+        </sc-for>
+        <div style="background:#1d160d;color:#f4e8dd;border-radius:22px;padding:24px 22px;display:flex;flex-direction:column;gap:14px;box-shadow:0 10px 22px rgba(50,30,70,.18)">
+          <span style="font-size:34px;line-height:1">🙂</span>
+          <div style="font-family:'Baloo 2',sans-serif;font-weight:800;font-size:clamp(22px,2.6vw,28px);line-height:1;letter-spacing:-.5px">{{ t.funcCardTitle }}</div>
+          <p style="font-weight:500;font-size:14px;color:#d7ccbf;margin:0;line-height:1.4">{{ t.funcCardNote }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY DIFFERENT -->
+  <section style="background:#f4e8dd">
+    <div style="max-width:1000px;margin:0 auto;padding:60px 24px;text-align:center">
+      <p style="font-family:'Baloo 2',sans-serif;font-weight:600;font-size:15px;letter-spacing:.16em;text-transform:uppercase;color:#9a7bb0;margin:0">{{ t.whyKicker }}</p>
+      <h2 style="font-family:'Baloo 2',sans-serif;font-weight:800;font-size:clamp(32px,4.1vw,52px);line-height:1.05;letter-spacing:-1.2px;margin:16px auto 0;max-width:900px;text-wrap:balance">{{ t.whyTitle }}</h2>
+      <div data-nos="" style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin:44px 0 0;text-align:left">
+        <sc-for list="{{ t.nos }}" as="n" hint-placeholder-count="4">
+          <div style="display:flex;align-items:center;gap:14px;background:#fffaf3;border:2px solid #1d160d;border-radius:16px;padding:18px 22px">
+            <span style="flex:none;width:30px;height:30px;border-radius:50%;background:#caa0d8;display:flex;align-items:center;justify-content:center;font-family:'Baloo 2',sans-serif;font-weight:800;font-size:18px;color:#1d160d">✕</span>
+            <span style="font-family:'Baloo 2',sans-serif;font-weight:700;font-size:clamp(16px,1.9vw,19px)">{{ n }}</span>
+          </div>
+        </sc-for>
+      </div>
+      <p style="font-size:clamp(19px,2.4vw,25px);font-weight:600;line-height:1.4;max-width:620px;margin:40px auto 0;color:#3a3226">{{ t.whyBody }}</p>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section style="background:#efe0d3">
+    <div style="max-width:760px;margin:0 auto;padding:60px 24px">
+      <p style="font-family:'Baloo 2',sans-serif;font-weight:600;font-size:15px;letter-spacing:.16em;text-transform:uppercase;color:#9a7bb0;margin:0;text-align:center">{{ t.faqKicker }}</p>
+      <h2 style="font-family:'Baloo 2',sans-serif;font-weight:800;font-size:clamp(32px,4.4vw,56px);line-height:1;letter-spacing:-1.2px;margin:14px 0 0;text-align:center">{{ t.faqTitle }}</h2>
+      <div style="display:flex;flex-direction:column;gap:12px;margin-top:36px">
+        <sc-for list="{{ t.faqs }}" as="f" hint-placeholder-count="5">
+          <details style="background:#fffaf3;border:2px solid #1d160d;border-radius:16px;overflow:hidden">
+            <summary style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 22px;font-family:'Baloo 2',sans-serif;font-weight:700;font-size:clamp(16px,2vw,20px);color:#1d160d">
+              <span>{{ f.q }}</span>
+              <span data-faqic="" style="flex:none;font-size:26px;line-height:1;color:#9a7bb0;transition:transform .2s ease">+</span>
+            </summary>
+            <p style="margin:0;padding:0 22px 20px;font-size:clamp(15px,1.8vw,17px);font-weight:500;line-height:1.5;color:#5a4f42">{{ f.a }}</p>
+          </details>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section id="join" style="background:#caa0d8">
+    <div style="max-width:900px;margin:0 auto;padding:72px 24px;text-align:center">
+      <h2 style="font-family:'Baloo 2',sans-serif;font-weight:800;font-size:clamp(46px,7vw,96px);line-height:.96;letter-spacing:-2px;margin:0">{{ t.finalTitle1 }}<br>{{ t.finalTitle2 }}</h2>
+      <p style="font-size:clamp(18px,2.3vw,23px);font-weight:600;color:#4a335a;margin:22px auto 0;max-width:540px">{{ t.finalBody }}</p>
+      <form onSubmit="{{ onSubmit }}" style="margin:34px auto 0;display:flex;flex-wrap:wrap;gap:10px;justify-content:center;max-width:520px">
+        <sc-if value="{{ done }}" hint-placeholder-val="{{ false }}">
+          <div style="flex:1;min-width:280px;display:flex;flex-direction:column;gap:10px;align-items:center">
+            <div style="align-self:stretch;background:#1d160d;color:#f4e8dd;border-radius:14px;padding:16px 24px;font-weight:700;font-family:'Baloo 2',sans-serif;font-size:18px;text-align:center">{{ t.doneFinal }}</div>
+            <sc-if value="{{ notSuggested }}" hint-placeholder-val="{{ true }}">
+              <button type="button" onClick="{{ onOpenModal }}" style="border:none;background:none;cursor:pointer;font-family:'Baloo 2',sans-serif;font-weight:700;font-size:15px;color:#1d160d;text-decoration:underline;text-underline-offset:3px">{{ t.ideaLink }}</button>
+            </sc-if>
+          </div>
+        </sc-if>
+        <sc-if value="{{ notDone }}" hint-placeholder-val="{{ true }}">
+          <input type="email" required="" value="{{ email }}" onChange="{{ onEmail }}" placeholder="{{ t.emailPlaceholder }}" style="flex:1;min-width:240px;font-family:'Hanken Grotesk',sans-serif;font-size:17px;font-weight:500;padding:16px 20px;border-radius:14px;border:2px solid #1d160d;background:#fffaf3;color:#1d160d;outline:none">
+          <button type="submit" style="font-family:'Baloo 2',sans-serif;font-weight:700;font-size:18px;cursor:pointer;border:2px solid #1d160d;background:#1d160d;color:#f4e8dd;padding:16px 30px;border-radius:14px" style-hover="{{ btnHover }}">{{ t.joinCta }}</button>
+        </sc-if>
+      </form>
+      <sc-if value="{{ showWaitlistNote }}" hint-placeholder-val="{{ true }}">
+        <p style="margin:16px 0 0;font-size:14px;color:#5a4368;font-weight:600">{{ t.waitlistNote }}</p>
+      </sc-if>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer style="background:#1d160d;color:#f4e8dd">
+    <div style="max-width:1200px;margin:0 auto;padding:40px 24px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px">
+      <div style="display:flex;align-items:flex-end;gap:6px">
+        <span style="font-family:'Baloo 2',sans-serif;font-weight:800;font-size:24px;letter-spacing:-.5px;line-height:.8">CRUSH</span>
+        <span style="font-family:'Baloo 2',sans-serif;font-weight:600;font-size:12px;opacity:.7;margin-bottom:2px">food</span>
+      </div>
+      <span style="font-family:'Baloo 2',sans-serif;font-weight:600;font-size:15px;letter-spacing:.04em;opacity:.85">{{ t.footerTagline }}</span>
+      <span style="font-size:13px;opacity:.55">{{ t.footerCopy }}</span>
+    </div>
+  </footer>
+
+  <!-- SUGGESTION MODAL -->
+  <sc-if value="{{ showModal }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ onCloseModal }}" style="position:fixed;inset:0;z-index:1000;background:rgba(29,22,13,.55);backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;padding:24px;font-family:'Hanken Grotesk',sans-serif;animation:crush-fade .2s ease-out">
+      <div onClick="{{ stop }}" style="position:relative;width:100%;max-width:440px;background:#f4e8dd;border:3px solid #1d160d;border-radius:24px;box-shadow:0 24px 60px rgba(29,22,13,.4);padding:34px 30px 30px;text-align:center;animation:crush-pop-in .28s cubic-bezier(.2,1.2,.4,1)">
+        <button type="button" onClick="{{ onCloseModal }}" aria-label="Close" style="position:absolute;top:12px;right:16px;border:none;background:none;font-size:26px;line-height:1;cursor:pointer;color:#8a7d6c;font-family:'Baloo 2',sans-serif">×</button>
+        <sc-if value="{{ notSuggested }}" hint-placeholder-val="{{ true }}">
+          <div>
+            <div style="font-size:42px;line-height:1">💡</div>
+            <h3 style="font-family:'Baloo 2',sans-serif;font-weight:800;font-size:27px;letter-spacing:-1px;margin:10px 0 6px;color:#1d160d">{{ t.modalTitle }}</h3>
+            <p style="font-size:16px;font-weight:500;color:#5a4a3a;margin:0 0 18px;line-height:1.4">{{ t.modalBody }}</p>
+            <textarea value="{{ suggestion }}" onChange="{{ onSuggestion }}" rows="3" placeholder="{{ t.modalPlaceholder }}" style="width:100%;box-sizing:border-box;font-family:'Hanken Grotesk',sans-serif;font-size:16px;font-weight:500;padding:14px 16px;border-radius:14px;border:2px solid #1d160d;background:#fffaf3;color:#1d160d;outline:none;resize:vertical"></textarea>
+            <div style="display:flex;gap:10px;justify-content:center;margin-top:16px">
+              <button type="button" onClick="{{ onCloseModal }}" style="font-family:'Baloo 2',sans-serif;font-weight:700;font-size:16px;cursor:pointer;border:2px solid #1d160d;background:transparent;color:#1d160d;padding:12px 22px;border-radius:14px">{{ t.modalLater }}</button>
+              <button type="button" onClick="{{ onSuggest }}" style="font-family:'Baloo 2',sans-serif;font-weight:700;font-size:16px;cursor:pointer;border:2px solid #1d160d;background:#1d160d;color:#f4e8dd;padding:12px 28px;border-radius:14px" style-hover="{{ btnHover }}">{{ t.modalSend }}</button>
+            </div>
+          </div>
+        </sc-if>
+        <sc-if value="{{ suggested }}" hint-placeholder-val="{{ false }}">
+          <div>
+            <div style="font-size:46px;line-height:1">🍿</div>
+            <h3 style="font-family:'Baloo 2',sans-serif;font-weight:800;font-size:27px;letter-spacing:-1px;margin:10px 0 6px;color:#1d160d">{{ t.modalThanksTitle }}</h3>
+            <p style="font-size:16px;font-weight:500;color:#5a4a3a;margin:0 0 20px;line-height:1.4">{{ t.modalThanksBody }}</p>
+            <button type="button" onClick="{{ onCloseModal }}" style="font-family:'Baloo 2',sans-serif;font-weight:700;font-size:16px;cursor:pointer;border:2px solid #1d160d;background:#1d160d;color:#f4e8dd;padding:12px 30px;border-radius:14px" style-hover="{{ btnHover }}">{{ t.modalDone }}</button>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1200,&quot;height&quot;:2200},&quot;lang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;fr&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;'en' | 'fr'&quot;},&quot;showTicker&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;showWaitlistNote&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  // Paste your Google Apps Script Web App URL here (ends in /exec):
+  SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbz_q-4S7gzCsV3D_cqlrnZHDhlpG9bB4RTQ-PO57TtrzHkjm5CZCcjNdoc75wwdiBqwuA/exec';
+  state = { email: '', done: false, suggestion: '', suggested: false, showModal: false, lang: 'en', langTouched: false };
+  layerRefs = [];
+  copy = {
+    en: {
+      joinCta: 'Join the waitlist',
+      heroBadge: '🍿 Protein & fibre popcorn',
+      heroTitle: 'Feed the craving.',
+      heroSubA: 'Popcorn that tastes like a treat — because it is. With ',
+      heroSubStrong: '10g of protein',
+      heroSubMid: ' and ',
+      heroSubStrong2: 'high fibre',
+      heroSubB: ' built right in. ',
+      heroSubSpan: 'No catch.',
+      badgeText: 'MADE FOR CRAVINGS · MADE FOR CRAVINGS · ',
+      sticker90: 'A BAG',
+      emailPlaceholder: 'your best email',
+      doneHero: "You're in. Go on, get excited. 🍿",
+      ideaLink: '💡 Got a flavour idea? Tell us',
+      formNote: "Priority access the day we drop, plus a little welcome treat. No spam — we'd never.",
+      scrollMore: "oh, there's loads more",
+      tickerLine: 'FEED THE CRAVING \u00A0\u2022\u00A0 10G PROTEIN \u00A0\u2022\u00A0 HIGH FIBRE \u00A0\u2022\u00A0 190 CALORIES \u00A0\u2022\u00A0 NO COMPROMISE \u00A0\u2022\u00A0 MADE FOR CRAVINGS \u00A0\u2022\u00A0 ',
+      probKicker: 'The snack aisle has a problem',
+      probTitle1: 'Every snack makes you',
+      probTitle2: 'pick a side.',
+      probTaste: 'Taste', probOr: 'or', probNutrition: 'nutrition',
+      probTreat: 'Treat', probFeelgood: 'feel good',
+      probBody: "We thought that was a bit rude. So we made a popcorn that refuses to choose — and you don't have to either.",
+      probTwistA: 'Plot twist: you can have the snack ', probTwistEm: 'and', probTwistB: ' the smug feeling. 😌',
+      prodKicker: 'First, the important bit',
+      prodTitle: 'The crunch you feel in your soul.',
+      prodBody: 'Light, airy, shatteringly crisp — then a wave of bold, proper flavour. Real chocolate hazelnut. Buttery salted caramel. Roasted pistachio. The kind of taste that delights your taste buds and demands one more handful.',
+      prodPunch: "One handful in and the bag's in trouble.",
+      prodTag: "portion control? built in — every bag's a tidy 90g.",
+      funcKicker: 'The good stuff',
+      funcTitle: 'The maths checks out.',
+      funcCardTitle: 'Made for cravings',
+      funcCardNote: "Cravings aren't the enemy. Boring snacks are.",
+      stats: [
+        { tag: 'actually filling', dot: '#9a7bb0', big: '10g', unit: 'Protein', note: 'Keeps you going way past 3pm.' },
+        { tag: 'secretly good', dot: '#7d8a3a', big: 'High', unit: 'Fibre', note: 'Satisfaction in every handful.' },
+        { tag: 'whole 90g bag 🍿', dot: '#c07a2a', big: '190', unit: 'Calories', note: 'Per 90g pack. Yes, all of it.' },
+      ],
+      whyKicker: 'Why CRUSH hits different',
+      whyTitle: "Protein snacks have a reputation. We're here to ruin it.",
+      nos: ['No chalky texture', 'No artificial aftertaste', 'No sad cardboard protein bar', 'No "is this actually nice?" face'],
+      whyBody: 'Just popcorn that tastes like a treat — because it is one. The good-for-you part is our little secret.',
+      faqKicker: 'Before you ask',
+      faqTitle: 'Sceptical? Totally fair.',
+      faqs: [
+        { q: 'When can I actually buy it?', a: "Very soon — and waitlisters hear first. Join up top and we'll email you the moment it drops, with a head start before everyone else." },
+        { q: "Is it genuinely good for me, or 'good for me'?", a: '10g of protein, high fibre and 190 calories for a whole 90g bag. Real numbers, no sneaky asterisks.' },
+        { q: "What's actually in it?", a: 'Air-popped popcorn, plant protein and fibre, and proper flavour. No chalky fillers, no weird aftertaste.' },
+        { q: 'Does "protein popcorn" taste like cardboard?', a: "Not a chance — that's the whole point. If it didn't taste unreal, we wouldn't put our name on it." },
+        { q: 'How much will it cost?', a: 'Fair for a snack this good — and the waitlist gets first dibs on the best launch price.' },
+      ],
+      finalTitle1: 'Go on.', finalTitle2: 'Have the snack.',
+      finalBody: 'Join the waitlist and be first in line when CRUSH drops. The first batch is limited — your cravings have waited long enough.',
+      doneFinal: "You're on the list. We'll be in touch. 🍿",
+      waitlistNote: 'Early birds get first dibs + a little welcome treat.',
+      footerTagline: 'Feed the craving.',
+      footerCopy: '© CRUSH food. Made for cravings.',
+      modalTitle: "While you're here…",
+      modalBody: "Got a flavour or feature you'd love to see? We actually read every one of these.",
+      modalPlaceholder: 'e.g. a spicy mango flavour, or bigger sharing bags…',
+      modalLater: 'Maybe later', modalSend: 'Send it',
+      modalThanksTitle: 'Brilliant — noted!',
+      modalThanksBody: "Thank you. Your idea's now in front of the team. 💛",
+      modalDone: 'Done',
+    },
+    fr: {
+      joinCta: "Rejoindre la liste",
+      heroBadge: '🍿 Popcorn protéiné & riche en fibres',
+      heroTitle: "Tant qu'à craquer…",
+      heroSubA: 'Un popcorn gourmand, ',
+      heroSubStrong: 'riche en protéines',
+      heroSubMid: ' et en ',
+      heroSubStrong2: 'fibres.',
+      heroSubB: ' Conçu pour tes envies. ',
+      heroSubSpan: 'Pas pour les compromis.',
+      badgeText: 'MADE FOR CRAVINGS · MADE FOR CRAVINGS · ',
+      sticker90: 'LE SACHET',
+      emailPlaceholder: 'ton meilleur email',
+      doneHero: "C'est noté. Tu peux exulter. 🍿",
+      ideaLink: '💡 Une idée de saveur ? Dis-nous',
+      formNote: 'Accès prioritaire le jour du lancement, plus une petite surprise de bienvenue. Pas de spam — promis.',
+      scrollMore: "et ce n'est pas fini",
+      tickerLine: "CÉDEZ À L'ENVIE \u00A0\u2022\u00A0 10G DE PROTÉINES \u00A0\u2022\u00A0 RICHE EN FIBRES \u00A0\u2022\u00A0 190 CALORIES \u00A0\u2022\u00A0 SANS COMPROMIS \u00A0\u2022\u00A0 100% PLAISIR ET CARRÉMENT GOURMAND \u00A0\u2022\u00A0 ",
+      probKicker: 'On connaît tous ce moment… quand une envie de snack arrive',
+      probTitle1: 'Pourquoi faudrait-il',
+      probTitle2: 'choisir ?',
+      probTaste: 'Le goût', probOr: 'ou', probNutrition: 'la nutrition',
+      probTreat: 'Le plaisir', probFeelgood: 'la bonne conscience',
+      probBody: "On a trouvé ça un peu vache. Alors on s'est mis au défi de créer un snack qui coche enfin toutes les cases.",
+      probTwistA: 'Tu peux enfin te faire plaisir ', probTwistEm: 'sans culpabiliser', probTwistB: ' ensuite. 😌',
+      prodKicker: "D'abord, l'essentiel",
+      prodTitle: 'Le croquant qui résonne en toi.',
+      prodBody: "Léger, aérien, d'un croustillant qui éclate — puis une vague de saveur franche et généreuse. Vrai chocolat-noisette. Caramel beurre salé. Pistache torréfiée. Le genre de goût qui fait plaisir à tes papilles et réclame une poignée de plus.",
+      prodPunch: "Une poignée et le sachet est déjà en danger.",
+      prodTag: "le contrôle des portions ? intégré — chaque sachet fait pile 90g.",
+      funcKicker: 'Ce qui compte',
+      funcTitle: 'Les calculs sont bons.',
+      funcCardTitle: 'Fait pour les envies',
+      funcCardNote: "Les envies ne sont pas l'ennemi. Les snacks ennuyeux, si.",
+      stats: [
+        { tag: 'vraiment rassasiant', dot: '#9a7bb0', big: '10g', unit: 'Protéines', note: "De l'énergie bien après 15h." },
+        { tag: 'discrètement sain', dot: '#7d8a3a', big: 'Riche', unit: 'Fibres', note: 'De la satiété à chaque poignée.' },
+        { tag: 'le sachet entier 90g 🍿', dot: '#c07a2a', big: '190', unit: 'Calories', note: 'Pour 90g. Oui, tout le sachet.' },
+      ],
+      whyKicker: 'Pourquoi CRUSH change tout',
+      whyTitle: "Les snacks protéinés ont une réputation. On est là pour te prouver le contraire.",
+      nos: ['Aucune texture cartonnée', 'Aucun arrière-goût artificiel ou trop sucré', "Aucune liste d'ingrédients « chelou »", 'Aucune grimace « c\u2019est censé être bon ? »'],
+      whyBody: "Juste un popcorn qui a le goût d'une gourmandise — parce que c'en est une. Le côté sain, c'est notre petit secret.",
+      faqKicker: 'Avant que tu nous demandes',
+      faqTitle: 'Sceptique ? Tout à fait normal.',
+      faqs: [
+        { q: 'Quand pourra-t-on vraiment en acheter ?', a: "Très bientôt — et la liste d'attente est prévenue en premier. Inscris-toi en haut et on t'écrit dès le lancement, avec une longueur d'avance." },
+        { q: "C'est vraiment bon pour moi, ou « bon pour moi » ?", a: '10g de protéines, riche en fibres et 190 calories pour un sachet entier de 90g. De vrais chiffres, sans astérisque caché.' },
+        { q: "Qu'est-ce qu'il y a dedans, concrètement ?", a: "Du popcorn soufflé à l'air, des protéines et fibres végétales, et une vraie saveur. Pas d'ingrédients chimiques, pas d'arrière-goût." },
+        { q: 'Le « popcorn protéiné », ça a le goût du carton ?', a: "Pas une seconde — c'est tout l'intérêt. Si ce n'était pas bluffant, on n'y mettrait pas notre nom." },
+        { q: 'Ça coûtera combien ?', a: "Le juste prix pour un snack de cette qualité — et la liste d'attente profite en priorité du meilleur tarif de lancement." },
+      ],
+      finalTitle1: 'Allez-y.', finalTitle2: 'Cédez au snack.',
+      finalBody: "Rejoins la liste d'attente et sois aux premières loges quand CRUSH sort. Le premier lot est limité — tes envies ont assez attendu.",
+      doneFinal: "Tu es sur la liste. On revient vers toi. 🍿",
+      waitlistNote: 'Les premiers inscrits passent devant + une surprise de bienvenue.',
+      footerTagline: "Cédez à l'envie.",
+      footerCopy: '© CRUSH food. Fait pour les envies.',
+      modalTitle: 'Tant que tu es là…',
+      modalBody: "Une saveur ou une idée que tu adorerais voir ? On lit vraiment chacune d'elles.",
+      modalPlaceholder: 'ex. une saveur mangue épicée, ou de plus grands sachets à partager…',
+      modalLater: 'Plus tard', modalSend: 'Envoyer',
+      modalThanksTitle: 'Génial — c\u2019est noté !',
+      modalThanksBody: "Merci. Ton idée est maintenant entre les mains de l'équipe. 💛",
+      modalDone: 'Terminé',
+    },
+  };
+  popLayers = (() => {
+    let s = 7;
+    const rand = () => { s = (s * 9301 + 49297) % 233280; return s / 233280; };
+    const cfg = [
+      { depth: 0.22, count: 10, base: 38 },
+      { depth: 0.5, count: 8, base: 54 },
+      { depth: 0.95, count: 6, base: 78 },
+    ];
+    return cfg.map(c => ({
+      depth: c.depth,
+      items: Array.from({ length: c.count }, () => ({
+        left: rand() * 96 + 2,
+        top: rand() * 90 + 4,
+        size: c.base + rand() * 26,
+        delay: -rand() * 5,
+        dur: 2.8 + rand() * 2.6,
+        rot: rand() * 50 - 25,
+      })),
+    }));
+  })();
+  get lang() {
+    if (this.state.langTouched) return this.state.lang;
+    const fromUrl = this.detectLang();
+    return fromUrl ?? (this.props.lang ?? 'en');
+  }
+  detectLang() {
+    try {
+      const url = new URL(window.location.href);
+      const q = (url.searchParams.get('lang') || '').toLowerCase();
+      if (q === 'fr' || q === 'en') return q;
+      const path = url.pathname.toLowerCase();
+      if (/(^|\/)fr(\.|\/|$)/.test(path)) return 'fr';
+      if (/(^|\/)en(\.|\/|$)/.test(path)) return 'en';
+    } catch (e) {}
+    return null;
+  }
+  setLang(lang) {
+    this.setState({ lang, langTouched: true });
+    try {
+      const url = new URL(window.location.href);
+      url.searchParams.set('lang', lang);
+      window.history.replaceState(null, '', url);
+    } catch (e) {}
+    try { document.documentElement.lang = lang; } catch (e) {}
+  }
+  componentDidMount() {
+    this.section = document.querySelector('[data-funcsec]');
+    this.onScroll = () => {
+      if (this._raf) return;
+      this._raf = requestAnimationFrame(() => {
+        this._raf = null;
+        if (!this.section) return;
+        const r = this.section.getBoundingClientRect();
+        const prog = (window.innerHeight - r.top) / (window.innerHeight + r.height);
+        this.layerRefs.forEach((el, i) => {
+          if (!el) return;
+          el.style.transform = `translateY(${(prog - 0.5) * this.popLayers[i].depth * 280}px)`;
+        });
+      });
+    };
+    window.addEventListener('scroll', this.onScroll, { passive: true });
+    window.addEventListener('resize', this.onScroll);
+    this.onScroll();
+    this.updateBadge();
+    try { document.documentElement.lang = this.lang; } catch (e) {}
+  }
+  componentDidUpdate() {
+    this.updateBadge();
+  }
+  updateBadge() {
+    const tp = document.querySelector('[data-badge] textPath');
+    if (!tp) return;
+    const txt = this.copy[this.lang].badgeText;
+    // Force a raw text node (a wrapper element breaks SVG path layout)
+    if (tp.firstElementChild || tp.textContent !== txt) tp.textContent = txt;
+  }
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.onScroll);
+    window.removeEventListener('resize', this.onScroll);
+  }
+  kernel(size) {
+    const h = React.createElement;
+    const lobes = [
+      { x: 0.50, y: 0.50, r: 0.36 },
+      { x: 0.50, y: 0.26, r: 0.31 },
+      { x: 0.27, y: 0.46, r: 0.31 },
+      { x: 0.73, y: 0.46, r: 0.31 },
+      { x: 0.34, y: 0.73, r: 0.29 },
+      { x: 0.66, y: 0.73, r: 0.29 },
+    ];
+    return h('span', { style: { position: 'relative', display: 'block', width: size + 'px', height: size + 'px' } },
+      lobes.map((l, k) =>
+        h('span', { key: k, style: {
+          position: 'absolute',
+          left: (l.x - l.r) * size + 'px', top: (l.y - l.r) * size + 'px',
+          width: l.r * 2 * size + 'px', height: l.r * 2 * size + 'px',
+          borderRadius: '50%',
+          background: 'radial-gradient(circle at 38% 32%, #fffef9 0%, #fff6e4 62%, #fbe7c4 100%)',
+          boxShadow: 'inset 0 -2px 3px rgba(214,180,120,.45)',
+        } })
+      )
+    );
+  }
+  buildPopField() {
+    const h = React.createElement;
+    return h('div', { style: { position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none', zIndex: 0 } },
+      this.popLayers.map((layer, i) =>
+        h('div', { key: i, ref: el => { this.layerRefs[i] = el; }, style: { position: 'absolute', left: 0, right: 0, top: '-25%', bottom: '-25%', willChange: 'transform' } },
+          layer.items.map((it, j) =>
+            h('span', { key: j, style: {
+              position: 'absolute', left: it.left + '%', top: it.top + '%',
+              opacity: 0,
+              '--rot': it.rot + 'deg',
+              animation: `crush-pop ${it.dur}s ease-in-out ${it.delay}s infinite`,
+              filter: 'drop-shadow(0 6px 8px rgba(50,20,70,.22))',
+            } }, this.kernel(it.size))
+          )
+        )
+      )
+    );
+  }
+  post(extra) {
+    if (!this.SHEET_ENDPOINT || this.SHEET_ENDPOINT.startsWith('PASTE_')) return;
+    const body = new URLSearchParams(Object.assign({
+      email: (this.state.email || '').trim(),
+      lang: this.lang,
+    }, extra || {}));
+    fetch(this.SHEET_ENDPOINT, { method: 'POST', mode: 'no-cors', body }).catch(() => {});
+  }
+  renderVals() {
+    const lang = this.lang;
+    const tabBtn = (active) => ({
+      border: 'none', cursor: 'pointer', padding: '7px 14px',
+      fontFamily: "'Baloo 2',sans-serif", fontWeight: 700, fontSize: '13px',
+      background: active ? '#1d160d' : 'transparent',
+      color: active ? '#f4e8dd' : '#1d160d',
+    });
+    return {
+      t: this.copy[lang],
+      enBtn: tabBtn(lang === 'en'),
+      frBtn: tabBtn(lang === 'fr'),
+      onEn: () => this.setLang('en'),
+      onFr: () => this.setLang('fr'),
+      popField: this.buildPopField(),
+      email: this.state.email,
+      done: this.state.done,
+      notDone: !this.state.done,
+      onEmail: (e) => this.setState({ email: e.target.value }),
+      suggestion: this.state.suggestion,
+      suggested: this.state.suggested,
+      notSuggested: !this.state.suggested,
+      showModal: this.state.showModal,
+      stop: (e) => e.stopPropagation(),
+      onOpenModal: () => this.setState({ showModal: true }),
+      onCloseModal: () => this.setState({ showModal: false }),
+      onSuggestion: (e) => this.setState({ suggestion: e.target.value }),
+      onSuggest: () => {
+        const suggestion = (this.state.suggestion || '').trim();
+        if (!suggestion) return;
+        this.post({ suggestion });
+        this.setState({ suggested: true });
+      },
+      onSubmit: (e) => {
+        e.preventDefault();
+        const email = (this.state.email || '').trim();
+        if (!email.includes('@')) return;
+        this.post();
+        this.setState({ done: true, showModal: true });
+      },
+      btnHover: { background: '#3a2c1a', borderColor: '#3a2c1a' },
+      showTicker: this.props.showTicker ?? true,
+      showWaitlistNote: this.props.showWaitlistNote ?? true,
+    };
+  }
+}
+</script>
+</body>
+</html>
